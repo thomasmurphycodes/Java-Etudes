@@ -29,7 +29,7 @@ public class DataStructureEtudes {
 
 		// Array resizing
 		final int INIT_SIZE = 10, GROW_FACTOR = 2;
-		int[] smallArray = new int[INIT_SIZE];
+		int[] smallArray = new int[INIT_SIZE];1
 		if(smallArray.length > INIT_SIZE  - 2) {
 			int[] tmp = new int[INIT_SIZE * GROW_FACTOR];
 			System.arraycopy(smallArray, 0, tmp, 0, smallArray.length);
@@ -52,11 +52,11 @@ public class DataStructureEtudes {
 		PriceList.forEach(num -> System.out.println(num)); // Note arrow notation on the forEach
 
 		Map<String, Integer> dailyPrices = new HashMap<String, Integer>();
-		dailyPrices.put("IBM", 83); // What's the name of insert method for HashMaps?
+		dailyPrices.put("IBM", 83);
 		//getKey() is method when iterating i.e. in lambda(mapItem -> mapitem.getKey())
 		System.out.println("Price of IBM is: " + dailyPrices.get("IBM"));
 
-		GenericEtude<String> stringStack = new GenericEtude<String>(20);
+		GenericEtude<String> stringStack = new GenericEtude<String>(20); // Initialize a generic stack with String
 
 		stringStack.push("FOO!");
 		System.out.println(stringStack.pop());
