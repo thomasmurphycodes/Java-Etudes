@@ -1,3 +1,3 @@
-public class Position<E> {
+public interface Position<E> {
 
 }
