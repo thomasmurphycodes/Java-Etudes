@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 /** Concrete implemention of a binary tree using a node based link structure */
 public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 	protected static class Node<E> implements Position<E> {
@@ -87,4 +89,94 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		return root;
 	}
 
+	/** Creates a new left child of Position p storing Element e; returns its Position */
+	public Position<E> addLeft(Position<E> p, E e) throws IllegalArgumentException {
+		Node<E> parent = validate(p);
+		if(parent.getLeft() != null)
+			throw new IllegalArgumentException("p already has a left child");
+		Node<E> child = createNode(e, null, null, parent);
+		parent.setLeft(child);
+		size++;
+		return child;
+	}
+
+	/** Creates a new right child of Position p storing Element e; returns its Position */
+	public Position<E> addRight(Position<E> p, E e) throws IllegalArgumentException {
+		Node<E> parent = validate(p);
+		if(parent.getRight() != null)
+			throw new IllegalArgumentException("p already has a right child");
+		Node<E> child = createNode(e, null, null, parent);
+		parent.setRight(child);
+		size++;
+		return child;
+	}
+
+	/** Replace the Node at Position p with e and return replaced Element */
+	public E set(Position<E> p, E e) throws IllegalArgumentException {
+		Node<E> node = validate(p);
+		E temp = node.getElement();
+		node.setElement(e);
+		return temp;
+	}
+
+	/** Attaches trees t1 and t2 as the left and right subtrees of external p */
+	public void attach(Position <E> p, LinkedBinaryTree<E> t1, LinkedBinaryTree<E> t2) 
+		throws IllegalArgumentException {
+			Node<E> node  = validate(p); // Validate parent node
+			if (isInternal(p)) throw new IllegalArgumentException("root for subtrees must be a leaf");
+			size += t1.size + t2.size;
+			if(!t1.isEmpty()) {
+				t1.root.setParent(node);
+				node.setLeft(t1.root);
+				t1.root = null;
+				t1.size = 0;
+			}
+			if(!t2.isEmpty()) {
+				t2.root.setParent(node);
+				node.setRight(t2.root);
+				t2.root = null;
+				t2.size = 0;
+			}
+	}
+
+	/** Removes the node at position p and replaces it with its child, if any */
+	public E remove(Position<E> p) throws IllegalArgumentException {
+		Node<E> node = validate(p);
+		// Because of replacing p must have only one child node
+		if(numChildren(p) == 2) throw new IllegalArgumentException("p has two children");
+		Node<E> child = (node.getLeft() != null ? node.getLeft() : node.getRight());
+		if(child != null)
+			child.setParent(node.getParent());
+		if (node == root)
+			root = child;
+		else {
+			Node<E> parent = node.getParent();
+			if (node == parent.getLeft())
+				parent.setLeft(child);
+			else
+				parent.setRight(child);
+		}
+		size--;
+		E temp = node.getElement();
+		node.setElement(null);
+		node.setLeft(null);
+		node.setRight(null);
+		node.setParent(node); //Self-reference is convention here for defunct node to be GC'd
+		return temp;
+	}
+
+	// Iterator methods
+	private class ElementIterator implements Iterator<E> {
+		Iterator<Position<E>> posIterator = positions().iterator();
+		public boolean hasNext() { return posIterator.hasNext(); }
+		public E next() { return posIterator.next(); }
+		public void remove() { posIterator.remove(); }
+	}
+
+	public Iterator<E> iterator() { return new ElementIterator(); }
+
+	// Traversal methods
+	public Iterable<Position<E>> positions(){ return preorder(); }
+
+	
 }
