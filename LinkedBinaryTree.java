@@ -164,19 +164,4 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
 		node.setParent(node); //Self-reference is convention here for defunct node to be GC'd
 		return temp;
 	}
-
-	// Iterator methods
-	private class ElementIterator implements Iterator<E> {
-		Iterator<Position<E>> posIterator = positions().iterator();
-		public boolean hasNext() { return posIterator.hasNext(); }
-		public E next() { return posIterator.next(); }
-		public void remove() { posIterator.remove(); }
-	}
-
-	public Iterator<E> iterator() { return new ElementIterator(); }
-
-	// Traversal methods
-	public Iterable<Position<E>> positions(){ return preorder(); }
-
-	
 }
