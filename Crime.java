@@ -2,9 +2,11 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+
+/** Compile Please */
 public class Crime {
 	private int dcDist;
-	private int psa;
+	private String psa;
 	private LocalDateTime dispatchDateTime;
 	private LocalDate dispatchDate;
 	private LocalTime dispatchTime;
@@ -17,14 +19,18 @@ public class Crime {
 	private float longitude;
 	private float latitude;
 
-	@Override
-	public String toString(){
-		return "The crime occurred in district " + this.dcDist;
+	public Crime(int _dcDist){
+		this.dcDist = _dcDist;
 	}
-
-	public Crime(int _dcDist, int _psa){
+	
+	public Crime(int _dcDist, String _psa){
 		this.dcDist = _dcDist;
 		this.psa = _psa;
 		// this.dispatchDateTime = _dispatchDateTime;
+	}
+
+	@Override
+	public String toString(){
+		return "The crime occurred in district " + this.dcDist;
 	}
 }
